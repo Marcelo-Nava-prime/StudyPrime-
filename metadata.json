@@ -1,0 +1,11 @@
+{
+  "name": "StudyPrime",
+  "description": "Plataforma educativa colaborativa con biblioteca de apuntes, flashcards, tutor IA 24/7, escáner de ejercicios y comunidad de estudiantes.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

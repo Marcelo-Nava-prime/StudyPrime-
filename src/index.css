@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Playfair Display", "Newsreader", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+  --color-editorial-bg: #FDFDFB;
+  --color-editorial-panel: #F5F5F1;
+  --color-editorial-input: #F1F1ED;
+  --color-editorial-text: #121212;
+  --color-editorial-border: #E5E5E1;
+  --color-editorial-accent: #4F46E5;
+  --color-editorial-orange: #FF3D00;
+}
+
+:root {
+  --bg: #FDFDFB;
+  --accent: #4F46E5;
+  --secondary: #FF3D00;
+  --text: #121212;
+  --border: #E5E5E1;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background-color: #FDFDFB;
+  color: #121212;
+  font-family: var(--font-sans);
+}
+
+/* Editorial scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FDFDFB;
+}
+::-webkit-scrollbar-thumb {
+  background: #E5E5E1;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #121212;
+}
+

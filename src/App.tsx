@@ -24,22 +24,20 @@ import { AutoGeneratorView } from './components/AutoGeneratorView';
 import { FlashcardsView } from './components/FlashcardsView';
 import { QuizView } from './components/QuizView';
 import { StudyGroupsView } from './components/StudyGroupsView';
-import { CommunityView } from './components/CommunityView';
 import { MaterialDetailModal } from './components/MaterialDetailModal';
 import { UploadMaterialModal } from './components/UploadMaterialModal';
 import { UserProfileModal } from './components/UserProfileModal';
-import { PremiumUpgradeModal } from './components/PremiumUpgradeModal';
 import { AdminPanelModal } from './components/AdminPanelModal';
 
 export function App() {
   // Navigation View State
   const [activeTab, setActiveTab] = useState<
-    'feed' | 'library' | 'tutor' | 'scanner' | 'generator' | 'flashcards' | 'quiz' | 'groups' | 'community'
+    'feed' | 'library' | 'tutor' | 'scanner' | 'generator' | 'flashcards' | 'quiz' | 'groups'
   >('feed');
 
   // App State Data
   const [user, setUser] = useState<UserProfile>(CURRENT_USER);
-  const [materials, setMaterials] = useState<StudyMaterial[]>(MOCK_MATERIALS);
+  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
   const [groups, setGroups] = useState<StudyGroup[]>(MOCK_GROUPS);
   const [knowers, setKnowers] = useState<UserProfile[]>(MOCK_USERS);
   const [notifications, setNotifications] = useState<NotificationItem[]>(MOCK_NOTIFICATIONS);
@@ -194,14 +192,9 @@ export function App() {
     }
   };
 
-  // Update AI Daily Query Count
+  // Update AI Daily Query Count (Unlimited)
   const handleUpdateDailyQueries = () => {
-    if (user.plan === 'free' && user.dailyQueriesLeft > 0) {
-      setUser(prev => ({
-        ...prev,
-        dailyQueriesLeft: prev.dailyQueriesLeft - 1
-      }));
-    }
+    // Unlimited access
   };
 
   // AI Prompt Forwarding to Tutor
@@ -468,16 +461,6 @@ export function App() {
             />
           )}
 
-          {/* VIEW 9: KNOWERS COMMUNITY & LEADERBOARD */}
-          {activeTab === 'community' && (
-            <CommunityView
-              users={knowers}
-              currentUser={user}
-              language={language}
-              onToggleFollow={handleToggleFollowKnower}
-            />
-          )}
-
         </main>
 
       </div>
@@ -516,17 +499,7 @@ export function App() {
           userMaterials={materials.filter(m => m.authorId === user.id)}
           language={language}
           onClose={() => setIsProfileOpen(false)}
-          onOpenPremium={() => setIsPremiumOpen(true)}
-        />
-      )}
-
-      {/* Premium Upgrade Modal */}
-      {isPremiumOpen && (
-        <PremiumUpgradeModal
-          user={user}
-          language={language}
-          onClose={() => setIsPremiumOpen(false)}
-          onTogglePlan={(newPlan) => setUser(prev => ({ ...prev, plan: newPlan }))}
+          onOpenPremium={() => {}}
         />
       )}
 

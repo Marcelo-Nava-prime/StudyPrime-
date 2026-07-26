@@ -163,7 +163,7 @@ export const FeedView: React.FC<FeedViewProps> = ({
           <div>
             <h2 className="text-base font-serif font-bold uppercase tracking-wider text-[#121212] dark:text-white flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-[#FF3D00]" />
-              <span>{t.home.featuredTitle}</span>
+              <span>Tus Apuntes y Materiales</span>
             </h2>
           </div>
           <button
@@ -171,111 +171,120 @@ export const FeedView: React.FC<FeedViewProps> = ({
             className="text-xs font-bold uppercase tracking-wider text-[#4F46E5] hover:underline flex items-center gap-1"
             id="view-all-library-btn"
           >
-            <span>Ver biblioteca completa</span>
+            <span>Ver biblioteca</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {(materials || []).slice(0, 4).map((item) => (
-            <div
-              key={item.id}
-              className="p-6 bg-white dark:bg-neutral-900 border border-[#E5E5E1] dark:border-neutral-800 flex flex-col justify-between min-h-[220px] transition hover:border-[#121212] dark:hover:border-neutral-600"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-[10px] uppercase tracking-widest font-semibold text-neutral-500 font-mono">
-                    {item.subject} • {item.level}
-                  </span>
-                  <div className="flex items-center gap-1 text-xs font-bold text-[#121212] dark:text-white font-serif">
-                    <Star className="w-3.5 h-3.5 fill-[#FF3D00] text-[#FF3D00]" />
-                    <span>{item.rating.toFixed(1)}</span>
-                  </div>
-                </div>
-
-                <h3 
-                  onClick={() => onSelectMaterial(item)}
-                  className="font-serif text-xl leading-snug font-normal text-[#121212] dark:text-white mb-3 hover:text-[#4F46E5] cursor-pointer transition"
-                >
-                  {item.title}
-                </h3>
-
-                <p className="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 leading-relaxed font-sans">
-                  {item.description}
-                </p>
-              </div>
-
-              <div className="pt-3 border-t border-[#E5E5E1] dark:border-neutral-800 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <span className="text-[11px] font-bold text-[#4F46E5]">
-                    @{item.authorName.replace(/\s+/g, '')}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-4 text-neutral-500 font-mono">
-                  <button
-                    onClick={() => onToggleLike(item.id)}
-                    className={`flex items-center gap-1 transition ${
-                      item.isLiked ? 'text-[#FF3D00] font-bold' : 'hover:text-[#FF3D00]'
-                    }`}
-                  >
-                    <Heart className={`w-3.5 h-3.5 ${item.isLiked ? 'fill-[#FF3D00]' : ''}`} />
-                    <span>{item.likesCount}</span>
-                  </button>
-
-                  <div className="flex items-center gap-1">
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    <span>{item.commentsCount}</span>
-                  </div>
-                </div>
-              </div>
+        {(!materials || materials.length === 0) ? (
+          <div className="p-8 bg-white dark:bg-neutral-900 border border-dashed border-[#E5E5E1] dark:border-neutral-800 text-center space-y-3">
+            <BookOpen className="w-10 h-10 text-neutral-400 mx-auto" />
+            <h3 className="text-base font-serif font-bold text-[#121212] dark:text-white">Empiezas con la biblioteca limpia</h3>
+            <p className="text-xs text-neutral-500 max-w-md mx-auto font-sans">
+              No tienes ningún apunte creado todavía. Puedes subir tus propios archivos PDF/imágenes o usar el generador IA para crear esquemas y test al instante.
+            </p>
+            <div className="pt-2 flex justify-center gap-3">
+              <button
+                onClick={() => onNavigate('generator')}
+                className="px-4 py-2 bg-[#4F46E5] text-white font-bold text-xs uppercase tracking-wider hover:bg-indigo-600 transition"
+              >
+                Generar con IA
+              </button>
+              <button
+                onClick={() => onNavigate('scanner')}
+                className="px-4 py-2 bg-[#121212] text-white dark:bg-white dark:text-[#121212] font-bold text-xs uppercase tracking-wider transition"
+              >
+                Escanear Documento
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {(materials || []).slice(0, 4).map((item) => (
+              <div
+                key={item.id}
+                className="p-6 bg-white dark:bg-neutral-900 border border-[#E5E5E1] dark:border-neutral-800 flex flex-col justify-between min-h-[220px] transition hover:border-[#121212] dark:hover:border-neutral-600"
+              >
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-[10px] uppercase tracking-widest font-semibold text-neutral-500 font-mono">
+                      {item.subject} • {item.level}
+                    </span>
+                    <div className="flex items-center gap-1 text-xs font-bold text-[#121212] dark:text-white font-serif">
+                      <Star className="w-3.5 h-3.5 fill-[#FF3D00] text-[#FF3D00]" />
+                      <span>{item.rating.toFixed(1)}</span>
+                    </div>
+                  </div>
+
+                  <h3 
+                    onClick={() => onSelectMaterial(item)}
+                    className="font-serif text-xl leading-snug font-normal text-[#121212] dark:text-white mb-3 hover:text-[#4F46E5] cursor-pointer transition"
+                  >
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4 leading-relaxed font-sans">
+                    {item.description}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-[#E5E5E1] dark:border-neutral-800 flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-bold text-[#4F46E5]">
+                      @{item.authorName.replace(/\s+/g, '')}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-4 text-neutral-500 font-mono">
+                    <button
+                      onClick={() => onToggleLike(item.id)}
+                      className={`flex items-center gap-1 transition ${
+                        item.isLiked ? 'text-[#FF3D00] font-bold' : 'hover:text-[#FF3D00]'
+                      }`}
+                    >
+                      <Heart className={`w-3.5 h-3.5 ${item.isLiked ? 'fill-[#FF3D00]' : ''}`} />
+                      <span>{item.likesCount}</span>
+                    </button>
+
+                    <div className="flex items-center gap-1">
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>{item.commentsCount}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Top Knowers (Creators) Section */}
+      {/* Personal Progress Section */}
       <div>
         <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#E5E5E1] dark:border-neutral-800">
           <h2 className="text-base font-serif font-bold uppercase tracking-wider text-[#121212] dark:text-white flex items-center gap-2">
-            <Trophy className="w-4 h-4 text-[#FF3D00]" />
-            <span>{t.home.topKnowerTitle}</span>
+            <Flame className="w-4 h-4 text-[#FF3D00]" />
+            <span>Estado de Tu Racha &amp; Estudio</span>
           </h2>
-          <button
-            onClick={() => onNavigate('community')}
-            className="text-xs font-bold uppercase tracking-wider text-[#4F46E5] hover:underline flex items-center gap-1"
-          >
-            <span>Comunidad</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {(knowers || []).slice(0, 3).map((knower) => (
-            <div 
-              key={knower.id}
-              className="p-4 bg-white dark:bg-neutral-900 border border-[#E5E5E1] dark:border-neutral-800 flex items-center gap-3"
-            >
-              <img
-                src={knower.avatar}
-                alt={knower.name}
-                className="w-10 h-10 object-cover border border-[#E5E5E1]"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1">
-                  <h4 className="text-xs font-bold text-[#121212] dark:text-white truncate uppercase tracking-wider">
-                    {knower.name}
-                  </h4>
-                </div>
-                <p className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate">
-                  {knower.mainSubjects.join(', ')}
-                </p>
-                <div className="flex items-center gap-2 text-[10px] text-neutral-400 mt-1 font-mono">
-                  <span className="text-[#4F46E5] font-semibold">{knower.points} pts</span>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="p-5 bg-white dark:bg-neutral-900 border border-[#E5E5E1] dark:border-neutral-800 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 font-mono">Racha Actual</div>
+            <div className="text-2xl font-serif font-bold text-[#121212] dark:text-white">{user.streakDays} Días</div>
+            <p className="text-[11px] text-neutral-500 font-sans">Estudia hoy para iniciar tu racha consecutiva.</p>
+          </div>
+
+          <div className="p-5 bg-white dark:bg-neutral-900 border border-[#E5E5E1] dark:border-neutral-800 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 font-mono">Apuntes Guardados</div>
+            <div className="text-2xl font-serif font-bold text-[#121212] dark:text-white">{materials.length}</div>
+            <p className="text-[11px] text-neutral-500 font-sans">Añade o genera material de estudio.</p>
+          </div>
+
+          <div className="p-5 bg-white dark:bg-neutral-900 border border-[#E5E5E1] dark:border-neutral-800 space-y-1">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 font-mono">Tutoría IA</div>
+            <div className="text-2xl font-serif font-bold text-[#4F46E5]">Ilimitada</div>
+            <p className="text-[11px] text-neutral-500 font-sans">Sin restricciones de mensajes diarios.</p>
+          </div>
         </div>
       </div>
 

@@ -48,16 +48,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 <p className="text-xs text-slate-500 dark:text-slate-400">{user.username}</p>
               </div>
             </div>
-
-            <button
-              onClick={() => {
-                onClose();
-                onOpenPremium();
-              }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-xs shadow-md hover:opacity-90 transition"
-            >
-              {user.plan === 'premium' ? 'Suscripción PRO Activa ✓' : 'Mejorar a Plan PRO ⭐'}
-            </button>
           </div>
 
           <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -65,7 +55,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           </p>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-4 gap-2 text-center py-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800">
+          <div className="grid grid-cols-3 gap-2 text-center py-3 bg-slate-50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800">
             <div>
               <span className="text-base font-extrabold text-slate-900 dark:text-white block">{user.points}</span>
               <span className="text-[10px] font-semibold text-slate-400">PUNTOS</span>
@@ -73,10 +63,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             <div>
               <span className="text-base font-extrabold text-slate-900 dark:text-white block">{user.streakDays}d</span>
               <span className="text-[10px] font-semibold text-slate-400">RACHA</span>
-            </div>
-            <div>
-              <span className="text-base font-extrabold text-slate-900 dark:text-white block">{user.followersCount}</span>
-              <span className="text-[10px] font-semibold text-slate-400">SEGUIDORES</span>
             </div>
             <div>
               <span className="text-base font-extrabold text-slate-900 dark:text-white block">{userMaterials.length}</span>

@@ -139,21 +139,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>{user.streakDays}D</span>
           </div>
 
-          {/* Plan Badge */}
-          <button
-            onClick={onOpenPremium}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition ${
-              user.plan === 'premium'
-                ? 'bg-[#4F46E5] text-white'
-                : 'bg-[#F1F1ED] text-[#121212] dark:bg-neutral-800 dark:text-neutral-200 border border-[#E5E5E1] dark:border-neutral-700 hover:border-[#121212]'
-            }`}
+          {/* Plan Badge - Free & Unlimited */}
+          <div
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-[#4F46E5] text-white"
             id="plan-badge-btn"
           >
-            <Crown className="w-3.5 h-3.5 text-[#FF3D00]" />
-            <span className="hidden sm:inline">
-              {user.plan === 'premium' ? 'PRO' : `${user.dailyQueriesLeft} IA`}
-            </span>
-          </button>
+            <Sparkles className="w-3.5 h-3.5 text-[#FF3D00]" />
+            <span className="hidden sm:inline">IA Ilimitada</span>
+          </div>
 
           {/* Language Switcher */}
           <button

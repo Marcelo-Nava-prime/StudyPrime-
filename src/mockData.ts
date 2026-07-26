@@ -56,17 +56,17 @@ export const CURRENT_USER: UserProfile = {
   email: 'alex.martinez@estudiante.edu',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   role: 'Knower',
-  bio: 'Estudiante de 2º Bachillerato Tecnológico 🚀 Apasionado de la Física, Matemáticas y la Programación. Compartiendo mis apuntes detallados.',
+  bio: 'Mi espacio personal de estudio.',
   level: 'Bachillerato',
   mainSubjects: ['Matemáticas', 'Física', 'Informática'],
-  followersCount: 142,
-  followingCount: 38,
-  points: 1250,
-  badges: INITIAL_BADGES.slice(0, 4),
-  itemsPublished: 8,
-  streakDays: 12,
-  plan: 'free',
-  dailyQueriesLeft: 5
+  followersCount: 0,
+  followingCount: 0,
+  points: 0,
+  badges: [],
+  itemsPublished: 0,
+  streakDays: 0,
+  plan: 'premium',
+  dailyQueriesLeft: 9999
 };
 
 export const MOCK_USERS: UserProfile[] = [

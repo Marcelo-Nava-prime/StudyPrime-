@@ -48,15 +48,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const menuItems = [
     { id: 'feed', altId: 'home', label: t.nav.home, icon: Home, badge: null },
-    { id: 'library', label: t.nav.library, icon: BookOpen, badge: 'Popular' },
+    { id: 'library', label: t.nav.library, icon: BookOpen, badge: 'General' },
     { id: 'tutor', label: t.nav.aiTutor, icon: Bot, badge: 'IA 24/7' },
     { id: 'scanner', label: t.nav.scanner, icon: Camera, badge: 'OCR' },
     { id: 'generator', label: t.nav.generator, icon: Sparkles, badge: 'IA' },
     { id: 'flashcards', label: t.nav.flashcards, icon: Layers, badge: null },
     { id: 'quiz', altId: 'quizzes', label: t.nav.quizzes, icon: CheckCircle2, badge: null },
     { id: 'groups', label: t.nav.groups, icon: Users, badge: null },
-    { id: 'community', label: t.nav.community, icon: Trophy, badge: null },
-    { id: 'premium', label: t.nav.premium, icon: Crown, badge: user.plan === 'premium' ? 'ACTIVO' : 'PRO' },
   ];
 
   if (user.role === 'Admin' || user.role === 'Moderador') {

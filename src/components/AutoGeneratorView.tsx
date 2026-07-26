@@ -66,10 +66,16 @@ export const AutoGeneratorView: React.FC<AutoGeneratorViewProps> = ({
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        throw new Error(`Respuesta del servidor en formato no válido (${response.status} ${response.statusText})`);
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Error al generar material');
+        throw new Error(data.error || data.details || 'Error al generar material');
       }
 
       setGeneratedResult(data);

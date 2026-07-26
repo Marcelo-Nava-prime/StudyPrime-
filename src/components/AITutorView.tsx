@@ -50,9 +50,9 @@ export const AITutorView: React.FC<AITutorViewProps> = ({
   const createDefaultWelcome = (): AIChatMessage => ({
     id: `msg-welcome-${Date.now()}`,
     sender: 'assistant',
-    text: `¡Hola ${user.name.split(' ')[0]}! 👋 Soy **StudyPrime AI**, tu tutor de inteligencia artificial disponible 24/7.
+    text: `¡Hola ${user.name.split(' ')[0]}! 👋 Soy StudyPrime AI, tu tutor de inteligencia artificial disponible 24/7.
 
-¿En qué materia o ejercicio te puedo ayudar hoy? Puedo explicarte teorías de **Física**, resolver ecuaciones paso a paso de **Matemáticas**, resumir acontecimientos de **Historia** o diseñar tu **plan de estudio personal**.`,
+¿En qué materia o ejercicio te puedo ayudar hoy? Puedo explicarte teorías de Física, resolver ecuaciones paso a paso de Matemáticas, resumir acontecimientos de Historia o diseñar tu plan de estudio personal.`,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     suggestedQuestions: t.tutor.samplePrompts
   });
@@ -81,9 +81,9 @@ export const AITutorView: React.FC<AITutorViewProps> = ({
         {
           id: 'msg-welcome',
           sender: 'assistant',
-          text: `¡Hola ${user.name.split(' ')[0]}! 👋 Soy **StudyPrime AI**, tu tutor de inteligencia artificial disponible 24/7.
+          text: `¡Hola ${user.name.split(' ')[0]}! 👋 Soy StudyPrime AI, tu tutor de inteligencia artificial disponible 24/7.
 
-¿En qué materia o ejercicio te puedo ayudar hoy? Puedo explicarte teorías de **Física**, resolver ecuaciones paso a paso de **Matemáticas**, resumir acontecimientos de **Historia** o diseñar tu **plan de estudio personal**.`,
+¿En qué materia o ejercicio te puedo ayudar hoy? Puedo explicarte teorías de Física, resolver ecuaciones paso a paso de Matemáticas, resumir acontecimientos de Historia o diseñar tu plan de estudio personal.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           suggestedQuestions: t.tutor.samplePrompts
         }
@@ -233,10 +233,16 @@ export const AITutorView: React.FC<AITutorViewProps> = ({
         })
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data: any = {};
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        throw new Error(`Respuesta del servidor en formato no válido (${response.status} ${response.statusText})`);
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Error en la respuesta del servidor');
+        throw new Error(data.error || data.details || 'Error en la respuesta del servidor');
       }
 
       const aiReplyMsg: AIChatMessage = {

@@ -51,10 +51,15 @@ Modo de estudio actual: ${studyMode || 'Explicación General'}.
 Nivel de profundidad deseado: ${levelAdaptation || 'Intermedio'}.
 ${langInstruction}
 
-Pautas clave:
+REGLA CRÍTICA DE FORMATO:
+- NO utilices símbolos de formato Markdown como '#' para encabezados ni '*' para negritas, cursivas o viñetas.
+- Escribe respuestas limpias en texto plano. Usa mayúsculas si quieres enfatizar un concepto importante y listas numeradas (1, 2, 3) o guiones (-) para desglosar información.
+- ÚNICAMENTE se permite el asterisco '*' cuando sea indispensable como notación científica, fórmula matemática (multiplicación) o un nombre propio oficial que lo lleve (por ejemplo: Sagitario A*).
+
+Pautas pedagógicas:
 - Si el estudiante te pide resolver un problema o ejercicio, muestra el procedimiento completo PASO A PASO con fórmulas claras.
 - Si el usuario te pide un plan de estudio, estructúralo por días o semanas con metas alcanzables.
-- Sé empático, claro, pedagógico y estimulante. Si la respuesta involucra ecuaciones o listas, dale formato ordenado con viñetas y resaltados.
+- Sé empático, claro, pedagógico y estimulante.
 - Al final de cada respuesta importante, ofrece 2 o 3 preguntas de seguimiento o sugerencias para continuar aprendiendo.`;
 
       // Select model
@@ -70,7 +75,14 @@ Pautas clave:
         contents: formattedPrompt,
       });
 
-      const textOutput = response.text || 'No pude generar una respuesta en este momento. Intenta de nuevo.';
+      let textOutput = response.text || 'No pude generar una respuesta en este momento. Intenta de nuevo.';
+
+      // Clean unwanted markdown formatting (# and *) while preserving proper usages (e.g. Sagitario A*)
+      textOutput = textOutput
+        .replace(/^#{1,6}\s+/gm, '')
+        .replace(/^\*\s+/gm, '- ')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/(^|\s)\*([^*]+)\*(\s|$)/g, '$1$2$3');
 
       res.json({
         reply: textOutput,
@@ -220,6 +232,22 @@ Genera un conjunto estructurado en idioma ${langText} que contenga:
         details: error?.message || String(error)
       });
     }
+  });
+
+  // Catch-all 404 handler for API routes (prevents falling through to Vite index.html)
+  app.all('/api/*', (req, res) => {
+    res.status(404).json({ error: `Ruta de API no encontrada: ${req.method} ${req.path}` });
+  });
+
+  // Global API Error Handler (prevents Express sending HTML error pages)
+  app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.path.startsWith('/api')) {
+      console.error('Express API Error:', err);
+      return res.status(err.status || 500).json({
+        error: err.message || 'Error interno en el servidor API',
+      });
+    }
+    next(err);
   });
 
   // Vite Middleware in dev or static files in production

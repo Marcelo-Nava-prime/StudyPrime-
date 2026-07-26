@@ -23,9 +23,9 @@ import { translations } from '../lib/translations';
 interface FeedViewProps {
   user: UserProfile;
   materials: StudyMaterial[];
-  knowers: UserProfile[];
+  knowers?: UserProfile[];
   language: Language;
-  onNavigate: (view: string) => void;
+  onNavigate?: (view: string) => void;
   onSelectMaterial: (material: StudyMaterial) => void;
   onToggleLike: (materialId: string) => void;
 }
@@ -33,9 +33,9 @@ interface FeedViewProps {
 export const FeedView: React.FC<FeedViewProps> = ({
   user,
   materials,
-  knowers,
+  knowers = [],
   language,
-  onNavigate,
+  onNavigate = (_view: string) => {},
   onSelectMaterial,
   onToggleLike
 }) => {

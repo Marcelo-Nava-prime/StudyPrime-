@@ -173,9 +173,17 @@ export function App() {
           language
         })
       })
-      .then(res => res.json())
+      .then(async res => {
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          console.warn('Invalid JSON from /api/ai/generate-material');
+          return {};
+        }
+      })
       .then(data => {
-        if (data.flashcards && data.quizzes) {
+        if (data && data.flashcards && data.quizzes) {
           setMaterials(prev => prev.map(m => {
             if (m.id === newMat.id) {
               return {
@@ -369,17 +377,12 @@ export function App() {
           {activeTab === 'feed' && (
             <FeedView
               materials={materials}
+              knowers={knowers}
               user={user}
               language={language}
-              selectedSubject={selectedSubject}
-              selectedLevel={selectedLevel}
-              searchQuery={searchQuery}
-              onSelectSubject={setSelectedSubject}
-              onSelectLevel={setSelectedLevel}
+              onNavigate={(v) => setActiveTab(v as any)}
               onSelectMaterial={setSelectedMaterial}
               onToggleLike={handleToggleLike}
-              onToggleSave={handleToggleSave}
-              onOpenUpload={() => setIsUploadOpen(true)}
             />
           )}
 

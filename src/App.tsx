@@ -37,7 +37,7 @@ export function App() {
 
   // App State Data
   const [user, setUser] = useState<UserProfile>(CURRENT_USER);
-  const [materials, setMaterials] = useState<StudyMaterial[]>([]);
+  const [materials, setMaterials] = useState<StudyMaterial[]>(MOCK_MATERIALS);
   const [groups, setGroups] = useState<StudyGroup[]>(MOCK_GROUPS);
   const [knowers, setKnowers] = useState<UserProfile[]>(MOCK_USERS);
   const [notifications, setNotifications] = useState<NotificationItem[]>(MOCK_NOTIFICATIONS);

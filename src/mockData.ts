@@ -51,9 +51,9 @@ export const INITIAL_BADGES: Badge[] = [
 
 export const CURRENT_USER: UserProfile = {
   id: 'usr-me',
-  name: 'Alejandro Martínez',
-  username: '@alex_study26',
-  email: 'alex.martinez@estudiante.edu',
+  name: 'Mateo Martínez',
+  username: '@mateo_study26',
+  email: 'mateo.martinez@estudiante.edu',
   avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
   role: 'Knower',
   bio: 'Mi espacio personal de estudio.',
@@ -139,7 +139,7 @@ export const MOCK_MATERIALS: StudyMaterial[] = [
     title: 'Cálculo de Derivadas e Integrales Definidas con Ejemplos Resueltos',
     description: 'Guía práctica completa para Bachillerato y Selectividad/EBAU. Incluye reglas de derivación, integración por partes y cambio de variable con ejercicios explicados paso a paso.',
     authorId: 'usr-me',
-    authorName: 'Alejandro Martínez',
+    authorName: 'Mateo Martínez',
     authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     authorRole: 'Knower',
     level: 'Bachillerato',
@@ -362,12 +362,12 @@ export const MOCK_GROUPS: StudyGroup[] = [
     level: 'Bachillerato',
     membersCount: 418,
     isPrivate: false,
-    createdBy: 'Alejandro Martínez',
+    createdBy: 'Mateo Martínez',
     groupAvatar: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=150&auto=format&fit=crop&q=80',
     tags: ['EBAU', 'Bachillerato', 'Exámenes', 'Dudas'],
     isJoined: true,
     members: [
-      { name: 'Alejandro Martínez', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', role: 'Creador' },
+      { name: 'Mateo Martínez', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80', role: 'Creador' },
       { name: 'Sofia Chen', avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80', role: 'Moderador' },
       { name: 'Carlos Ruiz', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80', role: 'Miembro' }
     ],
@@ -385,7 +385,7 @@ export const MOCK_GROUPS: StudyGroup[] = [
         id: 'msg-2',
         groupId: 'grp-1',
         senderId: 'usr-me',
-        senderName: 'Alejandro Martínez',
+        senderName: 'Mateo Martínez',
         senderAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
         text: '¡Genial Sofia! Justo estaba practicando la integración por partes. ¿Alguien tiene ejercicios tipo examen del año pasado?',
         timestamp: '10:22 AM'
@@ -454,7 +454,7 @@ export const MOCK_COMMENTS: Comment[] = [
     authorName: 'Carlos Ruiz',
     authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     rating: 5,
-    text: 'Súper bien formateado. Lo guardé en mi colección de favoritas. ¡Muchas gracias Alejandro!',
+    text: 'Súper bien formateado. Lo guardé en mi colección de favoritas. ¡Muchas gracias Mateo!',
     date: 'Hace 2 días'
   }
 ];

@@ -234,17 +234,20 @@ Genera un conjunto estructurado en idioma ${langText} que contenga:
     }
   });
 
-  // Catch-all 404 handler for API routes (prevents falling through to Vite index.html)
-  app.all('/api/*', (req, res) => {
-    res.status(404).json({ error: `Ruta de API no encontrada: ${req.method} ${req.path}` });
+  // Catch-all 404 handler for any /api route (prevents falling through to Vite index.html)
+  app.use('/api', (req, res) => {
+    res.status(404).json({
+      error: `Ruta de API no encontrada: ${req.method} ${req.originalUrl || req.path}`
+    });
   });
 
   // Global API Error Handler (prevents Express sending HTML error pages)
   app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (req.path.startsWith('/api')) {
-      console.error('Express API Error:', err);
+    console.error('Express API Error:', err);
+    if (req.path.startsWith('/api') || (req.url && req.url.startsWith('/api'))) {
       return res.status(err.status || 500).json({
         error: err.message || 'Error interno en el servidor API',
+        details: String(err)
       });
     }
     next(err);

@@ -71,11 +71,14 @@ export const AutoGeneratorView: React.FC<AutoGeneratorViewProps> = ({
       try {
         data = JSON.parse(responseText);
       } catch {
-        throw new Error(`Respuesta del servidor en formato no válido (${response.status} ${response.statusText})`);
+        if (!response.ok) {
+          throw new Error(`Servidor no disponible temporalmente (${response.status} ${response.statusText || ''}). Por favor reintenta.`);
+        }
+        throw new Error('Respuesta del servidor en formato no válido');
       }
 
       if (!response.ok) {
-        throw new Error(data.error || data.details || 'Error al generar material');
+        throw new Error(data.error || data.details || `Error al generar material (${response.status})`);
       }
 
       setGeneratedResult(data);

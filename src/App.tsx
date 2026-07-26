@@ -24,6 +24,7 @@ import { AutoGeneratorView } from './components/AutoGeneratorView';
 import { FlashcardsView } from './components/FlashcardsView';
 import { QuizView } from './components/QuizView';
 import { StudyGroupsView } from './components/StudyGroupsView';
+import { SettingsView } from './components/SettingsView';
 import { MaterialDetailModal } from './components/MaterialDetailModal';
 import { UploadMaterialModal } from './components/UploadMaterialModal';
 import { UserProfileModal } from './components/UserProfileModal';
@@ -32,8 +33,8 @@ import { AdminPanelModal } from './components/AdminPanelModal';
 export function App() {
   // Navigation View State
   const [activeTab, setActiveTab] = useState<
-    'feed' | 'library' | 'tutor' | 'scanner' | 'generator' | 'flashcards' | 'quiz' | 'groups'
-  >('feed');
+    'feed' | 'library' | 'tutor' | 'scanner' | 'generator' | 'flashcards' | 'quiz' | 'groups' | 'settings'
+  >('library');
 
   // App State Data
   const [user, setUser] = useState<UserProfile>(CURRENT_USER);
@@ -342,7 +343,9 @@ export function App() {
         language={language}
         searchQuery={searchQuery}
         darkMode={darkMode}
+        setSearchQuery={setSearchQuery}
         onSearchChange={setSearchQuery}
+        setLanguage={setLanguage}
         onLanguageChange={setLanguage}
         onToggleDarkMode={toggleDarkMode}
         onOpenUpload={() => setIsUploadOpen(true)}
@@ -461,6 +464,17 @@ export function App() {
               onJoinToggle={handleJoinGroupToggle}
               onSendMessage={handleSendGroupMessage}
               onCreateGroup={handleCreateGroup}
+            />
+          )}
+
+          {/* VIEW 9: SETTINGS & GEMINI API KEY MANAGEMENT */}
+          {activeTab === 'settings' && (
+            <SettingsView
+              user={user}
+              language={language}
+              darkMode={darkMode}
+              onToggleDarkMode={toggleDarkMode}
+              onUpdateUser={(updated) => setUser(prev => ({ ...prev, ...updated }))}
             />
           )}
 

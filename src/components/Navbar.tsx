@@ -65,6 +65,34 @@ export const Navbar: React.FC<NavbarProps> = ({
   const unreadCount = safeNotifications.filter(n => !n.read).length;
   const isDark = isDarkMode ?? darkMode ?? false;
 
+  const handleLanguageToggle = () => {
+    const nextLang = language === 'es' ? 'en' : 'es';
+    if (setLanguage) {
+      setLanguage(nextLang);
+    }
+    if (onLanguageChange) {
+      onLanguageChange(nextLang);
+    }
+  };
+
+  const handleDarkModeToggle = () => {
+    if (setIsDarkMode) {
+      setIsDarkMode(!isDark);
+    }
+    if (onToggleDarkMode) {
+      onToggleDarkMode();
+    }
+  };
+
+  const handleSearchChange = (val: string) => {
+    if (setSearchQuery) {
+      setSearchQuery(val);
+    }
+    if (onSearchChange) {
+      onSearchChange(val);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FDFDFB] dark:bg-[#121212] border-b border-[#E5E5E1] dark:border-neutral-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
@@ -81,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div 
-            onClick={() => onNavigate('home')}
+            onClick={() => onNavigate?.('home')}
             className="flex items-center gap-2.5 cursor-pointer group select-none"
             id="brand-logo"
           >
@@ -107,8 +135,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" />
             <input
               type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery || ''}
+              onChange={(e) => handleSearchChange(e.target.value)}
               placeholder={t.common.search}
               className="w-full pl-10 pr-4 py-2 text-xs rounded-full bg-[#F1F1ED] dark:bg-neutral-800 text-[#121212] dark:text-neutral-100 placeholder-neutral-400 border border-transparent focus:border-[#4F46E5] focus:bg-white dark:focus:bg-neutral-900 focus:outline-none transition font-sans"
               id="global-search-input"
@@ -150,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Language Switcher */}
           <button
-            onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
+            onClick={handleLanguageToggle}
             className="p-2 text-[#121212] dark:text-neutral-300 hover:bg-[#F1F1ED] dark:hover:bg-neutral-800 transition text-xs font-bold tracking-widest uppercase flex items-center gap-1"
             title="Cambiar Idioma / Switch Language"
             id="language-switch-btn"
@@ -161,12 +189,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Dark Mode Toggle */}
           <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
+            onClick={handleDarkModeToggle}
             className="p-2 text-[#121212] dark:text-neutral-300 hover:bg-[#F1F1ED] dark:hover:bg-neutral-800 transition"
             aria-label="Toggle Theme"
             id="dark-mode-btn"
           >
-            {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#121212]" />}
+            {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-[#121212]" />}
           </button>
 
           {/* Notifications Button & Dropdown */}

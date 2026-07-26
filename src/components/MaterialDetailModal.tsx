@@ -45,9 +45,7 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
   if (!material) return null;
 
   const t = translations[language];
-  const [activeTab, setActiveTab] = useState<'content' | 'flashcards' | 'quiz' | 'comments'>('content');
-  const [newCommentText, setNewCommentText] = useState('');
-  const [newCommentRating, setNewCommentRating] = useState(5);
+  const [activeTab, setActiveTab] = useState<'content' | 'flashcards' | 'quiz'>('content');
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
 
@@ -55,52 +53,41 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
   const [quizAnswers, setQuizAnswers] = useState<{ [qId: string]: number }>({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
-  const materialComments = comments.filter(c => c.materialId === material.id);
-
-  const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newCommentText.trim()) return;
-    onAddComment(material.id, newCommentText, newCommentRating);
-    setNewCommentText('');
-  };
-
   const currentFlashcard = material.flashcardSet?.[currentFlashcardIndex];
+  const isPdfFile = material.fileUrl?.startsWith('data:application/pdf') || material.fileUrl?.endsWith('.pdf');
+  const isImageFile = material.fileUrl?.startsWith('data:image') || material.fileUrl?.match(/\.(jpeg|jpg|gif|png|webp)$/i);
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-white dark:bg-[#121212] w-full max-w-4xl border border-[#E5E5E1] dark:border-neutral-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-start justify-between gap-4 bg-slate-50/50 dark:bg-slate-800/30">
+        <div className="p-5 border-b border-[#E5E5E1] dark:border-neutral-800 flex items-start justify-between gap-4 bg-[#FDFDFB] dark:bg-neutral-900">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300">
+              <span className="px-2.5 py-0.5 text-[10px] font-bold bg-[#4F46E5] text-white">
                 {material.subject}
               </span>
-              <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+              <span className="px-2 py-0.5 text-[10px] font-bold bg-[#E5E5E1] text-[#121212] dark:bg-neutral-800 dark:text-neutral-200">
                 {material.level}
               </span>
-              <span className="px-2 py-0.5 text-[10px] font-semibold rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 capitalize">
+              <span className="px-2 py-0.5 text-[10px] font-bold bg-[#E5E5E1] text-[#121212] dark:bg-neutral-800 dark:text-neutral-200 capitalize">
                 {material.type}
               </span>
-              <span className="text-[10px] text-slate-400">
-                📍 {material.region}
-              </span>
             </div>
-            <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-snug">
+            <h2 className="text-xl font-serif font-bold text-[#121212] dark:text-white leading-snug">
               {material.title}
             </h2>
-            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-2">
-              <img src={material.authorAvatar} alt="" className="w-5 h-5 rounded-full object-cover" />
-              <span>Por <strong className="text-slate-800 dark:text-slate-200">{material.authorName}</strong></span>
+            <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 mt-2 font-mono">
+              <span>Mis Apuntes Personales</span>
               <span>•</span>
-              <span>{material.createdAt}</span>
+              <span>Guardado el {material.createdAt}</span>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition shrink-0"
+            className="p-2 text-neutral-400 hover:text-[#121212] dark:hover:text-white transition shrink-0"
             id="close-material-modal-btn"
           >
             <X className="w-5 h-5" />
@@ -150,35 +137,12 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
               </button>
             )}
 
-            <button
-              onClick={() => setActiveTab('comments')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-                activeTab === 'comments'
-                  ? 'bg-teal-500 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
-              }`}
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Comentarios ({materialComments.length})</span>
-            </button>
           </div>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => onToggleLike(material.id)}
-              className={`p-2 rounded-xl text-xs font-semibold border flex items-center gap-1 transition ${
-                material.isLiked
-                  ? 'bg-rose-50 text-rose-600 border-rose-200 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800 font-bold'
-                  : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50'
-              }`}
-            >
-              <Heart className={`w-4 h-4 ${material.isLiked ? 'fill-rose-500' : ''}`} />
-              <span>{material.likesCount}</span>
-            </button>
-
-            <button
               onClick={() => onToggleSave(material.id)}
-              className={`p-2 rounded-xl text-xs font-semibold border flex items-center gap-1 transition ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition ${
                 material.isSaved
                   ? 'bg-teal-50 text-teal-600 border-teal-200 dark:bg-teal-950/60 dark:text-teal-300 dark:border-teal-800 font-bold'
                   : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50'
@@ -374,80 +338,6 @@ export const MaterialDetailModal: React.FC<MaterialDetailModalProps> = ({
                   </button>
                 )}
               </div>
-            </div>
-          )}
-
-          {/* TAB 4: COMMENTS */}
-          {activeTab === 'comments' && (
-            <div className="space-y-6">
-              
-              {/* Write Comment Form */}
-              <form onSubmit={handleCommentSubmit} className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                    Añadir una valoración y comentario:
-                  </span>
-                  <div className="flex items-center gap-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        onClick={() => setNewCommentRating(star)}
-                        className={`w-4 h-4 cursor-pointer transition ${
-                          star <= newCommentRating ? 'fill-amber-400 text-amber-400' : 'text-slate-300'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <textarea
-                  value={newCommentText}
-                  onChange={(e) => setNewCommentText(e.target.value)}
-                  placeholder="Escribe tu comentario o duda sobre este apunte..."
-                  rows={3}
-                  className="w-full p-3 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-teal-500 focus:outline-none"
-                />
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="px-4 py-2 rounded-xl bg-teal-600 text-white font-bold text-xs hover:bg-teal-500 transition flex items-center gap-1.5 shadow-sm"
-                  >
-                    <Send className="w-3.5 h-3.5" />
-                    <span>Publicar Comentario</span>
-                  </button>
-                </div>
-              </form>
-
-              {/* Comments List */}
-              <div className="space-y-3">
-                {materialComments.length === 0 ? (
-                  <p className="text-xs text-center py-8 text-slate-400">
-                    Aún no hay comentarios. ¡Sé el primero en opinar!
-                  </p>
-                ) : (
-                  materialComments.map((c) => (
-                    <div key={c.id} className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 space-y-2">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <img src={c.authorAvatar} alt="" className="w-6 h-6 rounded-full object-cover" />
-                          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{c.authorName}</span>
-                          <span className="text-[10px] text-slate-400">{c.date}</span>
-                        </div>
-                        <div className="flex items-center gap-0.5 text-amber-400">
-                          {[...Array(c.rating)].map((_, i) => (
-                            <Star key={i} className="w-3 h-3 fill-amber-400" />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                        {c.text}
-                      </p>
-                    </div>
-                  ))
-                )}
-              </div>
-
             </div>
           )}
 

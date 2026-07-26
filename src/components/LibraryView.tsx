@@ -82,10 +82,10 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5E5E1] dark:border-neutral-800">
         <div>
           <h1 className="text-3xl font-serif font-bold italic text-[#121212] dark:text-white">
-            Biblioteca Colaborativa
+            Mis Apuntes y Documentos
           </h1>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 font-sans">
-            Resúmenes, guías, flashcards y ejercicios resueltos ordenados por nivel y materia.
+            Tus apuntes privados, resúmenes, documentos PDF e imágenes de estudio.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ export const LibraryView: React.FC<LibraryViewProps> = ({
           id="library-upload-btn"
         >
           <PlusCircle className="w-4 h-4 text-[#FF3D00]" />
-          <span>{t.common.uploadNote}</span>
+          <span>+ Añadir Apunte / PDF</span>
         </button>
       </div>
 

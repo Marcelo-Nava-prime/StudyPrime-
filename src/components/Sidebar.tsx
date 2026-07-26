@@ -7,11 +7,8 @@ import {
   Sparkles, 
   Layers, 
   CheckCircle2, 
-  Users, 
-  Trophy, 
-  Crown, 
+  SlidersHorizontal,
   ShieldAlert,
-  ChevronRight,
   Flame,
   Plus
 } from 'lucide-react';
@@ -44,17 +41,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenPremium
 }) => {
   const t = translations[language];
-  const active = currentView || activeTab || 'feed';
+  const active = currentView || activeTab || 'library';
 
   const menuItems = [
-    { id: 'feed', altId: 'home', label: t.nav.home, icon: Home, badge: null },
-    { id: 'library', label: t.nav.library, icon: BookOpen, badge: 'General' },
+    { id: 'library', altId: 'feed', label: 'Mis Apuntes', icon: BookOpen, badge: 'Privado' },
     { id: 'tutor', label: t.nav.aiTutor, icon: Bot, badge: 'IA 24/7' },
     { id: 'scanner', label: t.nav.scanner, icon: Camera, badge: 'OCR' },
     { id: 'generator', label: t.nav.generator, icon: Sparkles, badge: 'IA' },
     { id: 'flashcards', label: t.nav.flashcards, icon: Layers, badge: null },
     { id: 'quiz', altId: 'quizzes', label: t.nav.quizzes, icon: CheckCircle2, badge: null },
-    { id: 'groups', label: t.nav.groups, icon: Users, badge: null },
+    { id: 'settings', label: 'Configuración', icon: SlidersHorizontal, badge: 'API Key' },
   ];
 
   if (user.role === 'Admin' || user.role === 'Moderador') {

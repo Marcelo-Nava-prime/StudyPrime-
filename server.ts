@@ -9,14 +9,16 @@ async function startServer() {
 
   app.use(express.json({ limit: '10mb' }));
 
+  let customGeminiApiKey: string | null = null;
+
   // Helper lazy init Gemini Client
-  const getGeminiClient = () => {
-    const apiKey = process.env.GEMINI_API_KEY;
+  const getGeminiClient = (headerKey?: string) => {
+    const apiKey = headerKey || customGeminiApiKey || process.env.GEMINI_API_KEY || '';
     if (!apiKey) {
-      console.warn('GEMINI_API_KEY is not defined in process.env');
+      console.warn('No Gemini API Key found in process.env or custom config');
     }
     return new GoogleGenAI({
-      apiKey: apiKey || '',
+      apiKey: apiKey,
       httpOptions: {
         headers: {
           'User-Agent': 'aistudio-build',
@@ -38,6 +40,63 @@ async function startServer() {
   // Healthcheck endpoint
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', app: 'StudyPrime API' });
+  });
+
+  // GET Settings: Current Gemini Key status
+  app.get('/api/settings/gemini-key', (req, res) => {
+    const activeKey = customGeminiApiKey || process.env.GEMINI_API_KEY || '';
+    const maskedKey = activeKey.length > 8 
+      ? `${activeKey.slice(0, 6)}...${activeKey.slice(-4)}` 
+      : activeKey ? '***' : '';
+
+    res.json({
+      hasKey: !!activeKey,
+      isCustom: !!customGeminiApiKey,
+      maskedKey
+    });
+  });
+
+  // POST Settings: Update & verify custom Gemini Key
+  app.post('/api/settings/gemini-key', async (req, res) => {
+    try {
+      const { apiKey } = req.body;
+      if (!apiKey || typeof apiKey !== 'string' || apiKey.trim().length < 8) {
+        return res.status(400).json({ error: 'La clave de API de Gemini no es válida.' });
+      }
+
+      const cleanKey = apiKey.trim();
+      const testAi = new GoogleGenAI({ apiKey: cleanKey });
+
+      // Verify key with Gemini
+      await testAi.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: 'Responde OK'
+      });
+
+      customGeminiApiKey = cleanKey;
+      const maskedKey = `${cleanKey.slice(0, 6)}...${cleanKey.slice(-4)}`;
+
+      res.json({
+        success: true,
+        message: 'Clave de API de Gemini verificada y guardada correctamente.',
+        maskedKey
+      });
+    } catch (error: any) {
+      console.error('Error al probar clave Gemini:', error);
+      res.status(400).json({
+        error: 'No se pudo conectar a Google AI con la clave proporcionada. Verifícala e inténtalo de nuevo.',
+        details: error?.message || String(error)
+      });
+    }
+  });
+
+  // DELETE Settings: Reset custom key to environment default
+  app.delete('/api/settings/gemini-key', (req, res) => {
+    customGeminiApiKey = null;
+    res.json({
+      success: true,
+      message: 'Se ha restaurado la clave por defecto.'
+    });
   });
 
   // 1. AI TUTOR CHAT ENDPOINT
